@@ -1,12 +1,12 @@
-import movies from "../data/movies";
 import MovieCard from "./MovieCard";
 import "../styles/MovieList.css";
-function MovieList()
+function MovieList({searchText,movies})
 {
+    const filteredMovies=movies.filter((movie)=>movie.title.toLowerCase().includes(searchText.toLowerCase()));
     return (
 <div className="movie-list">
     {
-        movies.map((movie)=>(
+        filteredMovies.map((movie)=>(
             <MovieCard key={movie.id} movie={movie}/>
         ))
     }

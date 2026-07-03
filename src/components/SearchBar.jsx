@@ -1,8 +1,8 @@
-import {useState} from "react";
+
 import "../styles/SearchBar.css";
-function SearchBar()
+function SearchBar({searchText,setSearchText})
 {
-    const [searchText,setSearchText]=useState("");
+
     return (
 <section className="search-container">
 <h1>Find your Favorite Movies</h1>
