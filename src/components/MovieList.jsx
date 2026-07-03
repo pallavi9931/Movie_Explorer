@@ -1,8 +1,18 @@
 import MovieCard from "./MovieCard";
 import "../styles/MovieList.css";
-function MovieList({searchText,movies})
+import MovieCardSkeleton from "./MovieCardSkeleton";
+function MovieList({searchText,movies,loading})
 {
     const filteredMovies=movies.filter((movie)=>movie.title.toLowerCase().includes(searchText.toLowerCase()));
+   if (loading){
+      return (
+<div className="movie-list">
+     {Array.from({length:8}).map((_,index)=>(
+        <MovieCardSkeleton key={index}/>
+     ))}
+</div>
+      );
+    }
     return (
 <div className="movie-list">
     {
