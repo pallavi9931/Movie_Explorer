@@ -1,0 +1,25 @@
+.search-container{
+    width:70%;
+    margin:40px auto;
+    text-align:center;
+}
+.search-container h1{
+    margin-bottom:30px;
+    color:#1f2937;
+}
+.search-container input{
+    width:100%;
+    padding:14px 18px;
+    font-size:16px;
+    border:2px solid #d1d5db;
+    border-radius:8px;
+    outline:none;
+}
+.search-container input:focus{
+    border-color:#2563eb;
+
+}
+.search-container p{
+    margin-top:15px;
+    font-size:18px;
+}
