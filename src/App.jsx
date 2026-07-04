@@ -48,7 +48,7 @@ function App()
 <Navbar title="Movie Explorer"/>
 <SearchBar searchText={searchText} setSearchText={setSearchText}/>
 
-<MovieList searchText={searchText} movies={movies} loading={loading} error={error}/>
+<MovieList searchText={searchText} movies={movies} loading={loading} error={error} setSearchText={setSearchText}/>
 <Footer/>
 
 
