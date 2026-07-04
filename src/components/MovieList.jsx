@@ -1,7 +1,7 @@
 import MovieCard from "./MovieCard";
 import "../styles/MovieList.css";
 import MovieCardSkeleton from "./MovieCardSkeleton";
-function MovieList({searchText,movies,loading})
+function MovieList({searchText,movies,loading,error})
 {
     const filteredMovies=movies.filter((movie)=>movie.title.toLowerCase().includes(searchText.toLowerCase()));
    if (loading){
@@ -12,6 +12,10 @@ function MovieList({searchText,movies,loading})
      ))}
 </div>
       );
+    }
+    if(error)
+    {
+        return <h2>{error}</h2>
     }
     return (
 <div className="movie-list">

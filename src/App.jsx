@@ -8,9 +8,27 @@ function App()
   const[searchText,setSearchText]=useState("");
   const[movies,setMovies]=useState([]);
   const[loading,setLoading]=useState(true);
+  const[error,setError]=useState("");
+  const[debouncedSearchText,setDebouncedSearchText]=useState("");
+  useEffect(()=>{
+  const timer=setTimeout(()=>
+  {
+    setDebouncedSearchText(searchText);
+  },500);
+  return ()=>clearTimeout(timer);
+  },[searchText]);
   useEffect(()=>
   {
-    fetch(`https://api.themoviedb.org/3/movie/popular?api_key=${import.meta.env.VITE_TMDB_API_KEY}`)
+    setLoading(true);
+    setError("");
+    let url = "";
+    if(debouncedSearchText.trim() === "")
+    {
+      url=`https://api.themoviedb.org/3/movie/popular?api_key=${import.meta.env.VITE_TMDB_API_KEY}`;
+    } else {
+      url = `https://api.themoviedb.org/3/search/movie?api_key=${import.meta.env.VITE_TMDB_API_KEY}&query=${debouncedSearchText}`;
+    }
+    fetch(url)
     .then((res)=>res.json())
     .then((data)=>{
       setMovies(data.results);
@@ -19,9 +37,10 @@ function App()
     .catch((error)=>
     {
       console.log(error);
+      setError("Failed to load movies.please try again");
       setLoading(false);
     })
-  },[]);
+  },[debouncedSearchText]);
  
 
   return(
@@ -29,7 +48,7 @@ function App()
 <Navbar title="Movie Explorer"/>
 <SearchBar searchText={searchText} setSearchText={setSearchText}/>
 
-<MovieList searchText={searchText} movies={movies} loading={loading}/>
+<MovieList searchText={searchText} movies={movies} loading={loading} error={error}/>
 <Footer/>
 
 
