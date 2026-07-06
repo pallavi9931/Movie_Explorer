@@ -1,9 +1,10 @@
 import "../styles/Navbar.css";
-function Navbar(props)
+function Navbar({title,favorites,showFavorites,setShowFavorites})
 {
     return(
 <nav>
-    <h2>{props.title}</h2>
+    <h1>{title}</h1>
+    
 
     <ul>
         <li>Home</li>
@@ -11,6 +12,11 @@ function Navbar(props)
         <li>Popular</li>
         <li>Favorites</li>
     </ul>
+    <button onClick={()=>setShowFavorites(!showFavorites)}>
+      {showFavorites
+          ? "🎬 All Movies"
+          : `❤️ Favorites (${favorites.length})`}
+    </button>
 </nav>
     );
 }

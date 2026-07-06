@@ -2,9 +2,14 @@ import MovieCard from "./MovieCard";
 import "../styles/MovieList.css";
 import MovieCardSkeleton from "./MovieCardSkeleton";
 import NoMoviesFound from "./NoMoviesFound";
-function MovieList({searchText,movies,loading,error,setSearchText})
+function MovieList({searchText,movies,loading,error,setSearchText,favorites,setFavorites,showFavorites,selectedMovieId,setSelectedMovieId})
 {
     const filteredMovies=movies.filter((movie)=>movie.title.toLowerCase().includes(searchText.toLowerCase()));
+    let displayedMovies=filteredMovies;
+    if(showFavorites)
+    {
+        displayedMovies=filteredMovies.filter((movie)=>favorites.includes(movie.id));
+    }
    if (loading){
       return (
 <div className="movie-list">
@@ -25,8 +30,8 @@ function MovieList({searchText,movies,loading,error,setSearchText})
     return (
 <div className="movie-list">
     {
-        filteredMovies.map((movie)=>(
-            <MovieCard key={movie.id} movie={movie}/>
+        displayedMovies.map((movie)=>(
+            <MovieCard key={movie.id} movie={movie} favorites={favorites} setFavorites={setFavorites} setSelectedMovieId={setSelectedMovieId}/>
         ))
     }
 

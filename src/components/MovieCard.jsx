@@ -1,6 +1,18 @@
 import "../styles/MovieCard.css";
-function MovieCard({movie})
+function MovieCard({movie,favorites,setFavorites,setSelectedMovieId})
 {
+    const isFavorite=favorites.includes(movie.id);
+    const handleFavorite=()=>{
+        if(isFavorite)
+        {
+    const newFavorites=favorites.filter((id)=>id!==movie.id);
+            setFavorites(newFavorites);
+        }
+        else{
+          setFavorites(  [...favorites,movie.id]);
+        }
+    }
+
     return (
 <div className="movie-card">
 <img 
@@ -11,8 +23,9 @@ function MovieCard({movie})
 <p>{movie.vote_average}</p>
 <p>{movie.release_date}</p>
 <div className="card-buttons">
-   <button>Favorite</button> 
-   <button>View Details</button> 
+   <button onClick={handleFavorite}>
+    {isFavorite ? "❤️ " :"🤍 "}</button> 
+   <button onClick={()=>setSelectedMovieId(movie.id)}>View Details</button> 
 </div>
 </div>
 </div>
