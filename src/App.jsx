@@ -5,13 +5,25 @@ import SearchBar from "./components/SearchBar";
 import MovieDetailsModal from "./components/MovieDetailsModal";
 
 import {useState,useEffect} from "react";
+/*import {getMovies,searchMovies} from "./services/tmdb"; */
+import useMovies from "./hooks/useMovies";
 function App()
 {
+ const[showFavorites,setShowFavorites]=useState(false);
+const[selectedMovieId,setSelectedMovieId]=useState(null);
+const[selectedCategory,setSelectedCategory]=useState("popular");
+
   const[searchText,setSearchText]=useState("");
-  const[movies,setMovies]=useState([]);
+ /* const[movies,setMovies]=useState([]);
   const[loading,setLoading]=useState(true);
   const[error,setError]=useState("");
+  */
+ 
   const[debouncedSearchText,setDebouncedSearchText]=useState("");
+  const { movies, loading, error } = useMovies(
+    selectedCategory,
+    debouncedSearchText
+);
   const [favorites, setFavorites] = useState(() => {
   const savedFavorites = localStorage.getItem("favorites");
 
@@ -21,8 +33,6 @@ function App()
 
   return [];
 });
-const[showFavorites,setShowFavorites]=useState(false);
-const[selectedMovieId,setSelectedMovieId]=useState(null);
 
 useEffect(()=>
 {
@@ -35,20 +45,14 @@ useEffect(()=>
   },500);
   return ()=>clearTimeout(timer);
   },[searchText]);
-  useEffect(()=>
+  /*useEffect(()=>
   {
     setLoading(true);
     setError("");
-    let url = "";
-    if(debouncedSearchText.trim() === "")
+    
+    const request=debouncedSearchText.trim()===""?getMovies(selectedCategory):searchMovies(debouncedSearchText);
+    request.then((data)=>
     {
-      url=`https://api.themoviedb.org/3/movie/popular?api_key=${import.meta.env.VITE_TMDB_API_KEY}`;
-    } else {
-      url = `https://api.themoviedb.org/3/search/movie?api_key=${import.meta.env.VITE_TMDB_API_KEY}&query=${debouncedSearchText}`;
-    }
-    fetch(url)
-    .then((res)=>res.json())
-    .then((data)=>{
       setMovies(data.results);
       setLoading(false);
     })
@@ -58,15 +62,16 @@ useEffect(()=>
       setError("Failed to load movies.please try again");
       setLoading(false);
     })
-  },[debouncedSearchText]);
+  },[debouncedSearchText,selectedCategory]);
+  */
+  
  
-console.log(selectedMovieId);
   return(
 <>
-<Navbar title="Movie Explorer" favorites={favorites} showFavorites={showFavorites} setShowFavorites={setShowFavorites}/>
+<Navbar title="Movie Explorer" favorites={favorites} showFavorites={showFavorites} setShowFavorites={setShowFavorites} selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />
 <SearchBar searchText={searchText} setSearchText={setSearchText}/>
 
-<MovieList searchText={searchText} movies={movies} loading={loading} error={error} setSearchText={setSearchText} favorites={favorites} setFavorites={setFavorites} showFavorites={showFavorites} selectedMovieId={setSelectedMovieId} setSelectedMovieId={setSelectedMovieId}/>
+<MovieList searchText={searchText} movies={movies} loading={loading} error={error} setSearchText={setSearchText} favorites={favorites} setFavorites={setFavorites} showFavorites={showFavorites} selectedMovieId={selectedMovieId} setSelectedMovieId={setSelectedMovieId}/>
 {
   selectedMovieId && (<MovieDetailsModal movieId={selectedMovieId} onClose={()=>setSelectedMovieId(null)}/>)
 }

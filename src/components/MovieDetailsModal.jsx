@@ -5,7 +5,28 @@ function MovieDetailsModal({movieId,onClose})
     const[movie,setMovie]=useState(null);
     const[loading,setLoading]=useState(true);
     const[error,setError]=useState("");
+    useEffect(() => {
+    document.body.style.overflow = "hidden";
 
+    return () => {
+        document.body.style.overflow = "auto";
+    };
+}, []);
+     useEffect(()=>
+    {
+   const handleKeyDown=(event)=>
+   {
+    if(event.key==="Escape")
+    {
+        onClose();
+    }
+   }
+      window.addEventListener("keydown", handleKeyDown);
+        return () => {
+        window.removeEventListener("keydown", handleKeyDown);
+    };  
+    },[onClose])
+    
     useEffect(()=>
     {
         setLoading(true);
@@ -34,8 +55,8 @@ function MovieDetailsModal({movieId,onClose})
         return <h2>{error}</h2>
     }
     return(
-        <div className="modal-overlay">
-            <div className="movie-modal">
+        <div className="modal-overlay" onClick={onClose}>
+            <div className="movie-modal" onClick={(e)=>e.stopPropagation()}>
               <button className="close-btn" onClick={onClose}> close </button>
 
               <div className="modal-content">
@@ -59,6 +80,7 @@ function MovieDetailsModal({movieId,onClose})
               </div>
             </div>
 
+      
         </div>
     );
 }
